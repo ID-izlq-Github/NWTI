@@ -1,73 +1,161 @@
-# React + TypeScript + Vite
+<p align="center">
+  <img src="public/favicon.svg" width="80" alt="NWTI Logo" />
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h1 align="center">NWTI — NW Typology Indicator</h1>
 
-Currently, two official plugins are available:
+<p align="center">
+  <em>🎭 你到底是谁？让科学（大概）来告诉你！</em>
+  <br/>
+  <em>Who the heck are you? Let science (probably) tell you!</em>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+<p align="center">
+  <a href="#-项目简介--about"><img src="https://img.shields.io/badge/lang-%F0%9F%87%A8%F0%9F%87%B3%20%E4%B8%AD%E6%96%87-blue" /></a>
+  <a href="#en"><img src="https://img.shields.io/badge/lang-English-green" /></a>
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react" />
+  <img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript" />
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite" />
+  <img src="https://img.shields.io/badge/results-100%25%20scientific%E2%84%A2-red" />
+</p>
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🇨🇳 中文
 
-## Expanding the ESLint configuration
+### 📖 项目简介
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**NWTI**（NW Typology Indicator）是一个基于 4 维人格模型的趣味测试工具。你只需要回答约 40 道题目，系统就会从 **16 种人格原型** 中找到你的"真身"——然后给你贴上一个响亮的标签。
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+> ⚠️ **免责声明**：本测试仅供娱乐。如果你的结果显示你是 "Yin-Biao Sun"，请不要砸电脑。
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🧠 测试维度
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| 维度 | 图标 | 解释 |
+|------|------|------|
+| **专业能力** Professional | 📚 | 学术以及专业水平 |
+| **责任意识** Responsibility | 🤝 | 拒绝官僚主义，强调协作 |
+| **道德水平** Morality | ⚖️ | 道德素养 |
+| **乐子程度** Funny | 🤡 | 这个人是否让人觉得可笑 |
+
+每维度分为 **L（低）/ M（中）/ H（高）** 三档，组合成 \(3^4 = 81\) 种可能，最终匹配到 16 种人格之一。
+
+### 🎯 特色
+
+- 🤹 **动态专业题库**：先选专业方向（数理 / 生化 / 商科计算机 / 文史政），后续题目从对应专业抽取
+- 🔮 **自评惩罚机制**：高估自己？扣分伺候！诚实自评才是美德
+- 🎪 **渐进式难度**：专业题按 basic → medium → advanced 递进，测出真实水平
+- 🖼️ **Voronoi Stippling 背景**：首页炫酷的点画特效 (致敬 Adrian Secord)
+- 📱 **响应式设计**：手机和电脑都能愉快地认清自己
+
+### 🚀 快速开始
+
+```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+
+# 构建生产版本
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🏗️ 项目结构
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── components/screens/   # 三个主页面：Intro / Test / Result
+├── context/              # React Context 状态管理 + Reducer
+├── data/                 # 题库、维度元数据、结果映射
+├── engine/               # 评分算法 & 惩罚逻辑
+├── types/                # 全局 TypeScript 类型
+├── App.tsx & App.css     # 根组件 + 全局样式
+└── main.tsx              # 入口
+```
+
+### 🧪 技术栈
+
+- **React 19** + **TypeScript 5.8** — 类型安全的前端基石
+- **Vite 8** — 秒级 HMR，开发体验起飞
+- **CSS Variables** — 几行变量控制全局主题换肤
+- **零运行时依赖** — 除了 React 本体，不需要额外 npm 包
+
+### 📦 部署
+
+部署到 GitHub Pages 只需两步：
+
+1. 编辑 `vite.config.ts`，取消注释 `base: '/你的仓库名/'`
+2. `npm run build && npx gh-pages -d dist`
+
+---
+
+## 🇬🇧 English
+
+### 📖 About
+
+**NWTI** is a fun 4-dimensional personality test. Answer ~40 quick questions, and the system will match you to one of **16 personality archetypes** — each paired with an inside-joke name from the NW universe.
+
+> ⚠️ **Disclaimer**: This test is for entertainment purposes. If your result says "Yin-Biao Sun", please do not throw your laptop out the window.
+
+### 🧠 The Four Dimensions
+
+| Dimension | Icon | Meaning |
+|-----------|------|---------|
+| **Professional** | 📚 | Academic & professional competence |
+| **Responsibility** | 🤝 | Willingness to collaborate & support others |
+| **Morality** | ⚖️ | Ethical standards |
+| **Funny** | 🤡 | How laughable this person is |
+
+Each dimension is graded **L (Low) / M (Medium) / H (High)**, generating \(3^4 = 81\) possible combinations that map to 16 personality archetypes.
+
+### 🎯 Highlights
+
+- 🤹 **Dynamic discipline-based question bank** — pick your field first, then get tailored questions
+- 🔮 **Self-evaluation penalty** — overrate yourself? The algorithm *will* punish you
+- 🎪 **Progressive difficulty** — professional questions escalate from basic → medium → advanced
+- 🖼️ **Voronoi Stippling background** — a stunning generative-art intro screen
+- 📱 **Fully responsive** — works on phones, tablets, and your 4K monitor
+
+### 🚀 Quick Start
+
+```bash
+npm install
+npm run dev      # development server with HMR
+npm run build    # production build → dist/
+```
+
+### 🏗️ Project Structure
+
+```
+src/
+├── components/screens/   # Intro / Test / Result screens
+├── context/              # React Context + Reducer state machine
+├── data/                 # Questions, dimension metadata, result mapping
+├── engine/               # Scoring & penalty algorithms
+├── types/                # Global TypeScript types
+├── App.tsx & App.css     # Root component + styles
+└── main.tsx              # Entry point
+```
+
+### 🧪 Tech Stack
+
+- **React 19** + **TypeScript 5.8**
+- **Vite 8** — instant HMR
+- **CSS Variables** — one-line theming
+- **Zero runtime dependencies** — just React
+
+### 📦 Deployment
+
+Deploy to GitHub Pages in two steps:
+
+1. Edit `vite.config.ts`, uncomment `base: '/your-repo-name/'`
+2. `npm run build && npx gh-pages -d dist`
+
+---
+
+<p align="center">
+  <sub>Made with ❤️ (and questionable test-design methodology) by the NW team</sub>
+  <br/>
+  <sub>© 2026-present. All 16 personalities are purely fictional — or are they? 🤔</sub>
+</p>
