@@ -97,6 +97,14 @@ export function ResultScreen() {
                 )}
             </div>
 
+            {/* 详细评价 */}
+            {matchedEntry?.detail && (
+                <div className="result-detail-card">
+                    <h3>评价解读</h3>
+                    <p>{matchedEntry.detail}</p>
+                </div>
+            )}
+
             {/* 4 维等级总览 */}
             <div className="result-levels-strip">
                 {dimResults.map(dr => (
