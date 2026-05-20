@@ -11,13 +11,14 @@ interface Phase {
 }
 
 function getPhases(): { phases: Phase[]; phaseByIndex: Map<number, number> } {
+    const obscureLabel = '📋 综合评估';
     const phases: Phase[] = [
         { label: '专业选择', start: 0, end: 0 },
         { label: '自评', start: 1, end: 3 },
         { label: DIM_ICONS.professional + ' ' + DIM_NAMES.professional, start: 4, end: 12 },
-        { label: DIM_ICONS.responsibility + ' ' + DIM_NAMES.responsibility, start: 13, end: 21 },
-        { label: DIM_ICONS.morality + ' ' + DIM_NAMES.morality, start: 22, end: 30 },
-        { label: DIM_ICONS.funny + ' ' + DIM_NAMES.funny, start: 31, end: 39 },
+        { label: obscureLabel, start: 13, end: 21 },
+        { label: obscureLabel, start: 22, end: 30 },
+        { label: obscureLabel, start: 31, end: 39 },
     ];
     const phaseByIndex = new Map<number, number>();
     for (const [pi, p] of phases.entries()) {
@@ -121,9 +122,15 @@ export function TestScreen() {
             <div className="question-card">
                 <div className="question-meta">
                     <span className="question-number">第 {currentIndex + 1} 题</span>
-                    <span className="question-dim">
-                        {DIM_ICONS[currentQuestion.dim]} {DIM_NAMES[currentQuestion.dim]}
-                    </span>
+                    {currentQuestion.dim === 'professional' ? (
+                        <span className="question-dim">
+                            {DIM_ICONS[currentQuestion.dim]} {DIM_NAMES[currentQuestion.dim]}
+                        </span>
+                    ) : (
+                        <span className="question-dim obscure">
+                            📋 综合评估
+                        </span>
+                    )}
                     {currentQuestion.difficulty && (
                         <span className={`difficulty-badge ${currentQuestion.difficulty}`}>
                             {currentQuestion.difficulty === 'basic' ? '基础' :
@@ -131,7 +138,16 @@ export function TestScreen() {
                         </span>
                     )}
                 </div>
-                <h2 className="question-text">{currentQuestion.text}</h2>
+                <h2
+                    className="question-text"
+                    dangerouslySetInnerHTML={{
+                        __html: currentQuestion.text
+                            .replace(/<sup>/g, '<sup>')
+                            .replace(/<\/sup>/g, '</sup>')
+                            .replace(/<sub>/g, '<sub>')
+                            .replace(/<\/sub>/g, '</sub>'),
+                    }}
+                />
 
                 <div className="options-list">
                     {currentQuestion.options.map((opt, oi) => {
@@ -143,7 +159,16 @@ export function TestScreen() {
                                 onClick={() => handleOptionClick(opt.value)}
                             >
                                 <span className="option-label">{OPTION_LABELS[oi] ?? oi + 1}</span>
-                                <span className="option-text">{opt.label}</span>
+                                <span
+                                    className="option-text"
+                                    dangerouslySetInnerHTML={{
+                                        __html: opt.label
+                                            .replace(/<sup>/g, '<sup>')
+                                            .replace(/<\/sup>/g, '</sup>')
+                                            .replace(/<sub>/g, '<sub>')
+                                            .replace(/<\/sub>/g, '</sub>'),
+                                    }}
+                                />
                             </button>
                         );
                     })}
