@@ -35,7 +35,8 @@ type TestAction =
     | { type: 'ANSWER'; questionId: string; value: number }
     | { type: 'GO_BACK'; targetIndex: number }
     | { type: 'SUBMIT' }
-    | { type: 'RESTART' };
+    | { type: 'RESTART' }
+    | { type: 'LOAD_RESULT'; result: TestState['result'] };
 
 // ========== Initial State ==========
 
@@ -132,9 +133,15 @@ function testReducer(state: TestState, action: TestAction): TestState {
                 funny: {},
             };
 
+            // Q1 和自评题(Q2-Q4)不参与维度分数计算
+            const excludeIds = new Set([
+                PROF_Q.id,
+                ...SELF_EVAL_QS.map(q => q.id),
+            ]);
+
             for (const q of state.questions) {
                 const score = state.answers[q.id];
-                if (score !== undefined) {
+                if (score !== undefined && !excludeIds.has(q.id)) {
                     dimAnswers[q.dim][q.id] = score;
                 }
             }
@@ -151,6 +158,9 @@ function testReducer(state: TestState, action: TestAction): TestState {
         case 'RESTART':
             return { ...initialState };
 
+        case 'LOAD_RESULT':
+            return { ...state, screen: 'result', result: action.result };
+
         default:
             return state;
     }
@@ -165,6 +175,7 @@ interface TestContextValue {
     goBack: (targetIndex: number) => void;
     submit: () => void;
     restart: () => void;
+    loadResult: (result: TestState['result']) => void;
     totalCount: number;
     answeredCount: number;
     allAnswered: boolean;
@@ -189,6 +200,10 @@ export function TestProvider({ children }: { children: React.ReactNode }) {
     );
     const submit = useCallback(() => dispatch({ type: 'SUBMIT' }), []);
     const restart = useCallback(() => dispatch({ type: 'RESTART' }), []);
+    const loadResult = useCallback(
+        (result: TestState['result']) => dispatch({ type: 'LOAD_RESULT', result }),
+        [],
+    );
 
     const totalCount = state.questions.length;
     const answeredCount = useMemo(
@@ -206,6 +221,7 @@ export function TestProvider({ children }: { children: React.ReactNode }) {
         goBack,
         submit,
         restart,
+        loadResult,
         totalCount,
         answeredCount,
         allAnswered,
