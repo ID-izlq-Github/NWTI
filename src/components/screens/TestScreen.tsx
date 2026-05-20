@@ -11,14 +11,11 @@ interface Phase {
 }
 
 function getPhases(): { phases: Phase[]; phaseByIndex: Map<number, number> } {
-    const obscureLabel = '📋 综合评估';
     const phases: Phase[] = [
         { label: '专业选择', start: 0, end: 0 },
         { label: '自评', start: 1, end: 3 },
-        { label: DIM_ICONS.professional + ' ' + DIM_NAMES.professional, start: 4, end: 12 },
-        { label: obscureLabel, start: 13, end: 21 },
-        { label: obscureLabel, start: 22, end: 30 },
-        { label: obscureLabel, start: 31, end: 39 },
+        { label: DIM_ICONS.professional + ' ' + DIM_NAMES.professional, start: 4, end: 6 },
+        { label: '📋 综合评估', start: 7, end: 33 },
     ];
     const phaseByIndex = new Map<number, number>();
     for (const [pi, p] of phases.entries()) {
