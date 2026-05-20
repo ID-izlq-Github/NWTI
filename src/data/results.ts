@@ -39,7 +39,7 @@ export const RESULTS: ResultEntry[] = [
             ['M'],         // 学术力
             ['L'],         // 靠谱程度
             ['L'],         // 拟人程度
-            ['H'],         // 招笑程度
+            ['M'],         // 招笑程度
         ],
         comment: '最强的 Nagotiator，如如之力出神入化，NW 神秘跑步男。',
         detail:
@@ -65,7 +65,7 @@ export const RESULTS: ResultEntry[] = [
         result: 'Patrick Landers',
         pattern: [
             ['H'],         // 学术力
-            ['H'],         // 靠谱程度
+            ['M', 'H'],    // 靠谱程度
             ['L', 'M'],    // 拟人程度
             ['L'],         // 招笑程度
         ],
@@ -125,7 +125,7 @@ export const RESULTS: ResultEntry[] = [
             ['L'],         // 拟人程度
             ['H'],         // 招笑程度
         ],
-        comment: '传奇嘉豪。',
+        comment: '赛级嘉豪。',
         detail:
             '水平堪忧、绝不靠谱、毫无人情味——但偏偏浑身都是戏。' +
             '招笑程度拉满的经典牢字辈，每一个操作都是节目效果。' +
@@ -139,10 +139,10 @@ export const RESULTS: ResultEntry[] = [
             ['M', 'H'],    // 拟人程度
             ['L'],         // 招笑程度
         ],
-        comment: '有能力的好人被搞走了，这不是NW的损失是什么？',
+        comment: '跑路是正确的',
         detail:
             '前学术校长，教学和行政双线拉满——做得好、给分严、说话管用。' +
-            '可惜被 Yin-Biao Sun 和 XR 联手排挤，含恨辞职。' +
+            '惜败于办公室斗争，含恨辞职。' +
             'NW 最意难平的牢字辈：不是没能力，是太有能力了。',
     },
     {
@@ -150,7 +150,7 @@ export const RESULTS: ResultEntry[] = [
         pattern: [
             ['H'],         // 学术力
             ['H'],         // 靠谱程度
-            ['H'],    // 拟人程度
+            ['H'],           // 拟人程度
             ['L'],         // 招笑程度
         ],
         comment: 'NW 唯一引进的能人，可惜变成牢字辈了。',
@@ -261,23 +261,43 @@ function countMatches(
 }
 
 /**
+ * 计算 pattern 的特异性分数
+ * specificity = 四个维度允许值数量的乘积，值越小 = 越精确 (越窄)
+ * 例：[H][H][L][L] → 1×1×1×1 = 1 (最窄)
+ *     [H][M,H][L,M][L] → 1×2×2×1 = 4 (较宽)
+ */
+function computeSpecificity(pattern: PatternTuple): number {
+    return pattern.reduce((prod, dim) => prod * dim.length, 1);
+}
+
+/**
  * 从 RESULTS 中找到最佳匹配的条目
- * 优先 4/4 完全匹配 → 3/4 → 2/4 → 1/4 → 兜底
+ * 三级排序：
+ *   1. hits 降序 (命中维度越多越好)
+ *   2. specificity 升序 (窄范围优先，精确匹配优先于宽泛匹配)
+ *   3. 数组原始顺序 (确定性兜底)
  */
 export function findResult(
     levels: [Level, Level, Level, Level]
 ): { entry: ResultEntry; matchCount: number } {
-    // 收集所有条目的命中数
-    const scored = RESULTS.map(entry => ({
+    const scored = RESULTS.map((entry, idx) => ({
         entry,
+        idx,
         hits: countMatches(levels, entry.pattern),
+        specificity: computeSpecificity(entry.pattern),
     }));
 
-    // 从高到低排序
-    scored.sort((a, b) => b.hits - a.hits);
+    scored.sort((a, b) => {
+        // 1. 命中维度数降序
+        if (a.hits !== b.hits) return b.hits - a.hits;
+        // 2. 特异性升序 (窄优先)
+        if (a.specificity !== b.specificity) return a.specificity - b.specificity;
+        // 3. 数组原始顺序
+        return a.idx - b.idx;
+    });
+
     const best = scored[0];
 
-    // 如果最佳命中 = 0，回退到第一个条目
     if (!best || best.hits === 0) {
         return { entry: RESULTS[0], matchCount: 0 };
     }
@@ -287,14 +307,23 @@ export function findResult(
 
 /**
  * 获取所有条目的匹配详情 (供调试/展示用)
+ * 排序与 findResult 一致：hits ↓ → specificity ↑ → 原顺序
  */
 export function getAllMatchDetails(
     levels: [Level, Level, Level, Level]
 ): { entry: ResultEntry; hits: number }[] {
-    return RESULTS.map(entry => ({
+    return RESULTS.map((entry, idx) => ({
         entry,
+        idx,
         hits: countMatches(levels, entry.pattern),
-    })).sort((a, b) => b.hits - a.hits);
+        specificity: computeSpecificity(entry.pattern),
+    }))
+        .sort((a, b) => {
+            if (a.hits !== b.hits) return b.hits - a.hits;
+            if (a.specificity !== b.specificity) return a.specificity - b.specificity;
+            return a.idx - b.idx;
+        })
+        .map(({ entry, hits }) => ({ entry, hits }));
 }
 
 // ================================================
