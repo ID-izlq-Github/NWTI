@@ -144,6 +144,7 @@ export function calcResults(input: CalcResultInput): TestResult {
         levels,
         matchedEntry: match.entry,
         matchCount: match.matchCount,
+        matchMask: match.matchMask,
         matchDetails: [{ entry: match.entry, hits: match.matchCount }],
     };
 }

@@ -271,6 +271,17 @@ function computeSpecificity(pattern: PatternTuple): number {
 }
 
 /**
+ * 计算被测者 levels 与 pattern 的四维命中掩码
+ * 返回 [学术力命中?, 靠谱命中?, 拟人命中?, 招笑命中?]
+ */
+function getMatchMask(
+    levels: [Level, Level, Level, Level],
+    pattern: PatternTuple
+): [boolean, boolean, boolean, boolean] {
+    return levels.map((l, i) => levelInPattern(l, pattern[i])) as [boolean, boolean, boolean, boolean];
+}
+
+/**
  * 从 RESULTS 中找到最佳匹配的条目
  * 三级排序：
  *   1. hits 降序 (命中维度越多越好)
@@ -279,7 +290,7 @@ function computeSpecificity(pattern: PatternTuple): number {
  */
 export function findResult(
     levels: [Level, Level, Level, Level]
-): { entry: ResultEntry; matchCount: number } {
+): { entry: ResultEntry; matchCount: number; matchMask: [boolean, boolean, boolean, boolean] } {
     const scored = RESULTS.map((entry, idx) => ({
         entry,
         idx,
@@ -299,10 +310,14 @@ export function findResult(
     const best = scored[0];
 
     if (!best || best.hits === 0) {
-        return { entry: RESULTS[0], matchCount: 0 };
+        return { entry: RESULTS[0], matchCount: 0, matchMask: [false, false, false, false] };
     }
 
-    return { entry: best.entry, matchCount: best.hits };
+    return {
+        entry: best.entry,
+        matchCount: best.hits,
+        matchMask: getMatchMask(levels, best.entry.pattern),
+    };
 }
 
 /**

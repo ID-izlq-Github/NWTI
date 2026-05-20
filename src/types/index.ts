@@ -87,6 +87,8 @@ export interface TestResult {
     matchedEntry: ResultEntry | null;
     /** 匹配完全度（4 维中命中的数量） */
     matchCount: number;
+    /** 四维是否命中 (对齐 dimResults / levels 顺序) */
+    matchMask: [boolean, boolean, boolean, boolean];
     /** 所有结果条目的匹配情况 */
     matchDetails: { entry: ResultEntry; hits: number }[];
 }

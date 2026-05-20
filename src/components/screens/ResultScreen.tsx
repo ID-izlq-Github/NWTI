@@ -80,7 +80,7 @@ export function ResultScreen() {
         );
     }
 
-    const { dimResults, matchedEntry } = result;
+    const { dimResults, matchedEntry, matchMask } = result;
 
     return (
         <div className="result-screen">
@@ -102,6 +102,22 @@ export function ResultScreen() {
                 <div className="result-detail-card">
                     <h3>评价解读</h3>
                     <p>{matchedEntry.detail}</p>
+                </div>
+            )}
+
+            {/* 维度命中提示 */}
+            {matchedEntry && (
+                <div className="result-match-hint">
+                    <span className="match-hint-label">维度命中：</span>
+                    {dimResults.map((dr, i) => (
+                        <span
+                            key={dr.dimId}
+                            className={`match-hint-item ${matchMask[i] ? 'hit' : 'miss'}`}
+                        >
+                            {DIM_ICONS[dr.dimId]} {DIM_NAMES[dr.dimId]}
+                            {matchMask[i] ? ' ✓' : ' ✗'}
+                        </span>
+                    ))}
                 </div>
             )}
 
