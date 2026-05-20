@@ -25,7 +25,7 @@
 
 ### 📖 项目简介
 
-**NWTI**（NW Typology Indicator）是一个基于 4 维人格模型的趣味测试工具。你只需要回答约 40 道题目，系统就会从 **16 种人格原型** 中找到你的"真身"——然后给你贴上一个响亮的标签。
+**NWTI**（NW Typology Indicator）是一个基于 4 维人格模型的趣味测试工具。你只需回答 40 道题目（1 道专业选择 + 3 道自评 + 9 道专业题 + 27 道核心题），系统就会从 **16 种人格原型** 中找到你的"真身"——然后给你贴上一个响亮的标签。
 
 > ⚠️ **免责声明**：本测试仅供娱乐。如果你的结果显示你是 "Yin-Biao Sun"，请不要砸电脑。
 
@@ -35,17 +35,17 @@
 |------|------|------|
 | **专业能力** Professional | 📚 | 学术以及专业水平 |
 | **责任意识** Responsibility | 🤝 | 拒绝官僚主义，强调协作 |
-| **道德水平** Morality | ⚖️ | 道德素养 |
-| **乐子程度** Funny | 🤡 | 这个人是否让人觉得可笑 |
+| **拟人程度** Morality | 🧑 | 像不像一个"人"？会不会干让人寒心的骚操作 |
+| **招笑程度** Funny | 🤡 | 是不是那种"心里没数还要装一把"的显眼包 |
 
-每维度分为 **L（低）/ M（中）/ H（高）** 三档，组合成 \(3^4 = 81\) 种可能，最终匹配到 16 种人格之一。
+每维度分为 **L（低）/ M（中）/ H（高）** 三档，组合成 3⁴ = 81 种可能，最终匹配到 16 种人格之一。
 
 ### 🎯 特色
 
 - 🤹 **动态专业题库**：先选专业方向（数理 / 生化 / 商科计算机 / 文史政），后续题目从对应专业抽取
 - 🔮 **自评惩罚机制**：高估自己？扣分伺候！诚实自评才是美德
-- 🎪 **渐进式难度**：专业题按 basic → medium → advanced 递进，测出真实水平
-- 🖼️ **Voronoi Stippling 背景**：首页炫酷的点画特效 (致敬 Adrian Secord)
+- 🎪 **4 阶段渐进式流程**：专业方向 → 自我评价 → 专业能力 → 综合评估，层层递进
+- 📊 **详细评价解读**：结果页不仅展示维度画像，还有针对每种人格的详细文字评价
 - 📱 **响应式设计**：手机和电脑都能愉快地认清自己
 
 ### 🚀 快速开始
@@ -94,7 +94,7 @@ src/
 
 ### 📖 About
 
-**NWTI** is a fun 4-dimensional personality test. Answer ~40 quick questions, and the system will match you to one of **16 personality archetypes** — each paired with an inside-joke name from the NW universe.
+**NWTI** is a fun 4-dimensional personality test. Answer 40 quick questions (1 field selection + 3 self-evaluations + 9 professional + 27 core questions), and the system will match you to one of **16 personality archetypes** — each paired with an inside-joke name from the NW universe.
 
 > ⚠️ **Disclaimer**: This test is for entertainment purposes. If your result says "Yin-Biao Sun", please do not throw your laptop out the window.
 
@@ -107,14 +107,14 @@ src/
 | **Morality** | ⚖️ | Ethical standards |
 | **Funny** | 🤡 | How laughable this person is |
 
-Each dimension is graded **L (Low) / M (Medium) / H (High)**, generating \(3^4 = 81\) possible combinations that map to 16 personality archetypes.
+Each dimension is graded **L (Low) / M (Medium) / H (High)**, generating 3⁴ = 81 possible combinations that map to 16 personality archetypes.
 
 ### 🎯 Highlights
 
 - 🤹 **Dynamic discipline-based question bank** — pick your field first, then get tailored questions
 - 🔮 **Self-evaluation penalty** — overrate yourself? The algorithm *will* punish you
-- 🎪 **Progressive difficulty** — professional questions escalate from basic → medium → advanced
-- 🖼️ **Voronoi Stippling background** — a stunning generative-art intro screen
+- 🎪 **4-phase progressive flow** — Field → Self-Eval → Professional → Comprehensive, step by step
+- 📊 **Detailed evaluation** — result screen shows dimension charts plus personality-specific commentary
 - 📱 **Fully responsive** — works on phones, tablets, and your 4K monitor
 
 ### 🚀 Quick Start
