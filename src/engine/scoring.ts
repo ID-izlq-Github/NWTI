@@ -6,52 +6,50 @@ import { findResult } from '../data/results';
 // 分数 → 等级映射
 // ================================================
 
-/** 将原始分 (0-8) 映射为 L / M / H */
+/** 将原始分 (0-8) 映射为 L / M / H (阈值: L=0-2, M=3-4, H=5-8) */
 export function scoreToLevel(score: number): Level {
     if (score <= 2) return 'L';
-    if (score <= 5) return 'M';
-    return 'H';    // 6-8
+    if (score <= 4) return 'M';
+    return 'H';    // 5-8
 }
 
 export function levelToScoreRange(level: Level): [number, number] {
     switch (level) {
         case 'L': return [0, 2];
-        case 'M': return [3, 5];
-        case 'H': return [6, 8];
+        case 'M': return [3, 4];
+        case 'H': return [5, 8];
     }
 }
 
 // ================================================
-// 自评偏差惩罚 (已减轻惩罚力度)
+// 自评偏差惩罚 (可配置惩罚矩阵)
 // ================================================
 
 /**
- * 惩罚规则：
- * 自评 0 (L) → 实考分直接使用，无惩罚 (L 默认最少置信)
- * 自评 1 (M) → 轻微惩罚曲线
- * 自评 2 (H) → 适度惩罚曲线
+ * 惩罚矩阵
+ * key: 自评等级 (L/M/H)
+ * value: { 实考分数范围: 惩罚分数 }
+ *
+ * 核心思想："高估自己"比"低估自己"惩罚更重
+ * - 自评 L (低调不自信) → 不扣分，信你实考
+ * - 自评 M → 实考偏低时扣 1 分
+ * - 自评 H (自视甚高) → 实考越低于预期扣得越多
  */
-export function calcPenalty(rawScore: number, selfEvalScore: 0 | 1 | 2): number {
-    // 自评 L (0) — 不做惩罚，完全信任实考
-    if (selfEvalScore === 0) return 0;
+const PENALTY_MATRIX: Record<Level, Record<Level, number>> = {
+    // 实考 L | 实考 M | 实考 H
+    L: { L: 0, M: 0, H: 0 },       // 自评 L：不作为惩罚
+    M: { L: 1, M: 0, H: 0 },       // 自评 M：实考偏低(L)扣 1
+    H: { L: 2, M: 1, H: 0 },       // 自评 H：实考偏低(L)扣 2，实考中(M)扣 1
+};
 
-    // 自评 M (1) — 轻微扣分
-    if (selfEvalScore === 1) {
-        // 实考高(≥5)无惩罚，实考中(3-4)扣 1，实考低(≤2)扣 1
-        if (rawScore >= 5) return 0;
-        if (rawScore >= 3) return 1;
-        return 1;
-    }
-
-    // 自评 H (2) — 适度惩罚
-    if (selfEvalScore === 2) {
-        // 实考高(≥7)无惩罚，实考中(4-6)扣 1，实考低(≤3)扣 2
-        if (rawScore >= 7) return 0;
-        if (rawScore >= 4) return 1;
-        return Math.min(2, rawScore);
-    }
-
-    return 0;
+/**
+ * 根据原始分 + 自评等级计算惩罚分数
+ * @param rawScore 维度原始分 (0-8)
+ * @param selfEval 自评等级
+ */
+export function calcPenalty(rawScore: number, selfEval: Level): number {
+    const actualLevel = scoreToLevel(rawScore);
+    return PENALTY_MATRIX[selfEval]?.[actualLevel] ?? 0;
 }
 
 // ================================================
@@ -82,8 +80,8 @@ export function calcDimResult(
     const selfEval: Level | undefined =
         selfEvalRaw != null ? (['L', 'M', 'H'] as const)[selfEvalRaw] : undefined;
 
-    // 惩罚
-    const penalty = calcPenalty(rawScore, (selfEvalRaw ?? 0) as 0 | 1 | 2);
+    // 惩罚 (无自评时默认按 L 处理 → 不惩罚)
+    const penalty = calcPenalty(rawScore, selfEval ?? 'L');
     const finalScore = Math.max(0, rawScore - penalty);
     const level = scoreToLevel(finalScore);
 
