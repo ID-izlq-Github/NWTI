@@ -1,10 +1,11 @@
+import { useRef } from 'react';
 import { useTest } from '../../context/TestContext';
 import {
     DIM_NAMES,
     DIM_ICONS,
     LEVEL_LABELS,
 } from '../../data/dimensions';
-import type { Level, DimResult } from '../../types';
+import type { Level, DimResult, TestResult } from '../../types';
 
 const LEVEL_COLORS: Record<Level, string> = { H: '#4caf50', M: '#ff9800', L: '#f44336' };
 
@@ -56,8 +57,51 @@ function ScoreBar({ dr }: { dr: DimResult }) {
 }
 
 export function ResultScreen() {
-    const { state, restart } = useTest();
+    const { state, restart, loadResult } = useTest();
     const { result } = state;
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleExport = () => {
+        if (!result) return;
+        const exportData: TestResult = result;
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nwti-result-${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    const handleImportClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            try {
+                const parsed = JSON.parse(evt.target?.result as string) as TestResult;
+                // 基本校验
+                if (!parsed.dimResults || !Array.isArray(parsed.dimResults)) {
+                    alert('无效的结果文件格式');
+                    return;
+                }
+                loadResult(parsed);
+            } catch {
+                alert('无法解析 JSON 文件，请确认文件格式正确');
+            }
+        };
+        reader.readAsText(file);
+
+        // 重置 input 以允许重复导入同一文件
+        e.target.value = '';
+    };
 
     if (!result) {
         return (
@@ -106,6 +150,25 @@ export function ResultScreen() {
                 {dimResults.map(dr => (
                     <ScoreBar key={dr.dimId} dr={dr} />
                 ))}
+            </div>
+
+            {/* 导出 / 导入 */}
+            <div className="result-actions">
+                <div className="result-actions-row">
+                    <button className="btn-outline" onClick={handleExport}>
+                        📥 导出结果
+                    </button>
+                    <button className="btn-outline" onClick={handleImportClick}>
+                        📤 导入结果
+                    </button>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".json"
+                        style={{ display: 'none' }}
+                        onChange={handleImport}
+                    />
+                </div>
             </div>
 
             {/* 重新测试 */}
