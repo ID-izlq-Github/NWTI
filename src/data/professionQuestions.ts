@@ -2,107 +2,121 @@ import type { Question, ProfessionKey } from '../types';
 
 /**
  * 专业题库：每专业 18 题（basic × 6 + medium × 6 + advanced × 6）
- * 实际考试从对应专业抽 9 题（每难度随机抽 3 题）
+ * 测试时从各难度中各随机抽取 3 题，共 9 题
  */
+
+// ========== 辅助函数 ==========
+
+function opt(label: string, value: number) {
+    return { label, value };
+}
 
 // ─────────────── 数理 (数学/物理) ───────────────
 const MATH_Q: Question[] = [
-    // basic
-    { id: 'math_b1', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '若 3x + 5 = 20，则 x = ?', options: [{ label: '3', value: 0 }, { label: '5', value: 8 }, { label: '7', value: 0 }, { label: '5/3', value: 0 }] },
-    { id: 'math_b2', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '三角形内角和是多少？', options: [{ label: '90°', value: 0 }, { label: '180°', value: 8 }, { label: '270°', value: 0 }, { label: '360°', value: 0 }] },
-    { id: 'math_b3', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '2³ × 2² 等于？', options: [{ label: '2⁵', value: 8 }, { label: '2⁶', value: 0 }, { label: '4⁵', value: 0 }, { label: '12', value: 0 }] },
-    { id: 'math_b4', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '重力加速度 g 约等于？', options: [{ label: '3.0 m/s²', value: 0 }, { label: '9.8 m/s²', value: 8 }, { label: '15 m/s²', value: 0 }, { label: '1.6 m/s²', value: 0 }] },
-    { id: 'math_b5', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '下列哪个是质数？', options: [{ label: '15', value: 0 }, { label: '21', value: 0 }, { label: '17', value: 8 }, { label: '27', value: 0 }] },
-    { id: 'math_b6', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '光在真空中的速度约为？', options: [{ label: '3×10⁶ m/s', value: 0 }, { label: '3×10⁸ m/s', value: 8 }, { label: '3×10¹⁰ m/s', value: 0 }, { label: '340 m/s', value: 0 }] },
-    // medium
-    { id: 'math_m1', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '∫₀¹ x² dx 的值是？', options: [{ label: '1/3', value: 8 }, { label: '1/2', value: 0 }, { label: '1', value: 0 }, { label: '2/3', value: 0 }] },
-    { id: 'math_m2', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '质量为 2kg 的物体受 10N 恒力，加速度为？', options: [{ label: '2 m/s²', value: 0 }, { label: '5 m/s²', value: 8 }, { label: '10 m/s²', value: 0 }, { label: '20 m/s²', value: 0 }] },
-    { id: 'math_m3', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '矩阵 [[1,2],[3,4]] 的行列式为？', options: [{ label: '10', value: 0 }, { label: '-2', value: 8 }, { label: '2', value: 0 }, { label: '-10', value: 0 }] },
-    { id: 'math_m4', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: 'k=200 N/m 的弹簧被压 0.1m，弹性势能为？', options: [{ label: '1 J', value: 8 }, { label: '2 J', value: 0 }, { label: '10 J', value: 0 }, { label: '0.5 J', value: 0 }] },
-    { id: 'math_m5', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: 'x² - 5x + 6 = 0 的解为？', options: [{ label: 'x=1,6', value: 0 }, { label: 'x=2,3', value: 8 }, { label: 'x=-2,-3', value: 0 }, { label: 'x=1.5,4', value: 0 }] },
-    { id: 'math_m6', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '匀速圆周运动中，哪个量在变化？', options: [{ label: '速率', value: 0 }, { label: '角速度', value: 0 }, { label: '速度方向', value: 8 }, { label: '周期', value: 0 }] },
-    // advanced
-    { id: 'math_a1', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: 'f(x)=x³-3x 在 x=1 处切线斜率为？', options: [{ label: '0', value: 8 }, { label: '3', value: 0 }, { label: '-3', value: 0 }, { label: '1', value: 0 }] },
-    { id: 'math_a2', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '薛定谔方程描述什么尺度的物理规律？', options: [{ label: '宏观天体', value: 0 }, { label: '微观粒子', value: 8 }, { label: '流体力学', value: 0 }, { label: '热传导', value: 0 }] },
-    { id: 'math_a3', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '函数在某点可导是其连续的什么条件？', options: [{ label: '必要不充分', value: 0 }, { label: '充分不必要', value: 8 }, { label: '充要', value: 0 }, { label: '都不', value: 0 }] },
-    { id: 'math_a4', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '戴维南定理用于简化什么？', options: [{ label: '电磁场', value: 0 }, { label: '线性电路', value: 8 }, { label: '热力学', value: 0 }, { label: '流体', value: 0 }] },
-    { id: 'math_a5', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '正则方程中 H 代表什么？', options: [{ label: '哈密顿量', value: 8 }, { label: '拉格朗日量', value: 0 }, { label: '熵', value: 0 }, { label: '焓', value: 0 }] },
-    { id: 'math_a6', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '量子力学中归一化条件的作用是？', options: [{ label: '保证能量守恒', value: 0 }, { label: '保证概率总和为1', value: 8 }, { label: '保证能量最低', value: 0 }, { label: '保证唯一解', value: 0 }] },
+    // basic — 下限保持，理解型基础
+    { id: 'math_b1', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: 'lim<sub>x→0</sub> (sin x) / x = ?', options: [opt('0', 0), opt('1', 8), opt('∞', 0), opt('不存在', 0)] },
+    { id: 'math_b2', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '变速运动中，速度对时间求导得到什么？', options: [opt('位移', 0), opt('加速度', 8), opt('动量', 0), opt('冲量', 0)] },
+    { id: 'math_b3', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '在无外力系统中，哪个量守恒？', options: [opt('速度', 0), opt('动量', 8), opt('加速度', 0), opt('位移', 0)] },
+    { id: 'math_b4', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '复数 i² 的值是？', options: [opt('1', 0), opt('-1', 8), opt('0', 0), opt('i', 0)] },
+    { id: 'math_b5', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '两个非零向量点积为 0，说明它们？', options: [opt('平行', 0), opt('垂直', 8), opt('同向', 0), opt('反向', 0)] },
+    { id: 'math_b6', dim: 'professional', difficulty: 'basic', profession: '数理 (数学/物理)' as ProfessionKey, text: '匀速圆周运动中，加速度方向指向？', options: [opt('切线方向', 0), opt('圆心', 8), opt('运动方向', 0), opt('竖直向下', 0)] },
+
+    // medium — 需要计算和概念辨析
+    { id: 'math_m1', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '曲线 y = x³ - 3x² + 2 的拐点对应的 x 坐标是？', options: [opt('0', 0), opt('1', 8), opt('2', 0), opt('-1', 0)] },
+    { id: 'math_m2', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '一物体沿斜面以恒定速度下滑，说明什么？', options: [opt('不受力', 0), opt('合力为零', 8), opt('仅受重力', 0), opt('加速度为 g', 0)] },
+    { id: 'math_m3', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '∫<sub>0</sub><sup>π</sup> sin x dx 的值是？', options: [opt('0', 0), opt('2', 8), opt('π', 0), opt('-2', 0)] },
+    { id: 'math_m4', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: 'd/dx (e<sup>x</sup>) 的结果是？', options: [opt('x·e<sup>x-1</sup>', 0), opt('e<sup>x</sup>', 8), opt('e<sup>x</sup> / x', 0), opt('ln x', 0)] },
+    { id: 'math_m5', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '矩阵 [[a,b],[c,d]] 的行列式为？', options: [opt('a+b+c+d', 0), opt('ad - bc', 8), opt('ac - bd', 0), opt('ab - cd', 0)] },
+    { id: 'math_m6', dim: 'professional', difficulty: 'medium', profession: '数理 (数学/物理)' as ProfessionKey, text: '简谐运动 x = A cos(ωt + φ)，速度幅值为？', options: [opt('A', 0), opt('Aω', 8), opt('A/ω', 0), opt('ω²A', 0)] },
+
+    // advanced — 上限拉高，IB HL / 大一级别
+    { id: 'math_a1', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '级数 ∑<sub>n=1</sub><sup>∞</sup> 1/n² 的收敛值是？', options: [opt('发散', 0), opt('π²/6', 8), opt('π/2', 0), opt('2', 0)] },
+    { id: 'math_a2', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '薛定谔方程 <i>iħ∂ψ/∂t = Ĥψ</i> 中，<i>ψ</i> 的物理意义是？', options: [opt('粒子轨迹', 0), opt('概率幅（波函数）', 8), opt('能量密度', 0), opt('电荷分布', 0)] },
+    { id: 'math_a3', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '函数在某点可导是其连续的什么条件？', options: [opt('必要不充分', 0), opt('充分不必要', 8), opt('充要', 0), opt('既不充分也不必要', 0)] },
+    { id: 'math_a4', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '麦克斯韦方程组描述的是什么？', options: [opt('引力场', 0), opt('电磁场', 8), opt('强相互作用', 0), opt('流体运动', 0)] },
+    { id: 'math_a5', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '矩阵 A 的特征值 λ 满足哪个方程？', options: [opt('Ax = λb', 0), opt('det(A - λI) = 0', 8), opt('tr(A) = λ', 0), opt('Aᵀ = λA', 0)] },
+    { id: 'math_a6', dim: 'professional', difficulty: 'advanced', profession: '数理 (数学/物理)' as ProfessionKey, text: '热力学第二定律的核心结论是？', options: [opt('能量守恒', 0), opt('孤立系统熵增', 8), opt('绝对零度不可达', 0), opt('内能是状态函数', 0)] },
 ];
 
 // ─────────────── 生化 (化学/生物) ───────────────
 const BIO_Q: Question[] = [
-    // basic
-    { id: 'bio_b1', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: '水的化学式是？', options: [{ label: 'H₂O', value: 8 }, { label: 'CO₂', value: 0 }, { label: 'NaCl', value: 0 }, { label: 'CH₄', value: 0 }] },
-    { id: 'bio_b2', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: 'DNA 的全称是什么？', options: [{ label: '脱氧核糖核酸', value: 8 }, { label: '核糖核酸', value: 0 }, { label: '氨基酸', value: 0 }, { label: '脂肪酸', value: 0 }] },
-    { id: 'bio_b3', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: '光合作用需要什么气体？', options: [{ label: '氧气', value: 0 }, { label: '二氧化碳', value: 8 }, { label: '氮气', value: 0 }, { label: '氢气', value: 0 }] },
-    { id: 'bio_b4', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: 'pH=7 的溶液是？', options: [{ label: '酸性', value: 0 }, { label: '碱性', value: 0 }, { label: '中性', value: 8 }, { label: '不确定', value: 0 }] },
-    { id: 'bio_b5', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: '人体最大的器官是？', options: [{ label: '肝脏', value: 0 }, { label: '皮肤', value: 8 }, { label: '大脑', value: 0 }, { label: '心脏', value: 0 }] },
-    { id: 'bio_b6', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: '原子序数代表什么粒子数量？', options: [{ label: '中子', value: 0 }, { label: '质子', value: 8 }, { label: '电子', value: 0 }, { label: '光子', value: 0 }] },
+    // basic — 下限保持
+    { id: 'bio_b1', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: '水的化学式是？', options: [opt('H₂O', 8), opt('CO₂', 0), opt('NaCl', 0), opt('CH₄', 0)] },
+    { id: 'bio_b2', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: 'DNA 的全称是什么？', options: [opt('脱氧核糖核酸', 8), opt('核糖核酸', 0), opt('氨基酸', 0), opt('脂肪酸', 0)] },
+    { id: 'bio_b3', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: 'pH=7 的溶液是？', options: [opt('酸性', 0), opt('碱性', 0), opt('中性', 8), opt('不确定', 0)] },
+    { id: 'bio_b4', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: '人体正常体温约？', options: [opt('35°C', 0), opt('37°C', 8), opt('39°C', 0), opt('42°C', 0)] },
+    { id: 'bio_b5', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: '光合作用发生在细胞的哪个结构？', options: [opt('线粒体', 0), opt('叶绿体', 8), opt('细胞核', 0), opt('高尔基体', 0)] },
+    { id: 'bio_b6', dim: 'professional', difficulty: 'basic', profession: '生化 (化学/生物)' as ProfessionKey, text: '元素周期表中水平行称为？', options: [opt('族', 0), opt('周期', 8), opt('区', 0), opt('层', 0)] },
+
     // medium
-    { id: 'bio_m1', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '三羧酸循环（TCA）发生在线粒体的哪里？', options: [{ label: '外膜', value: 0 }, { label: '基质', value: 8 }, { label: '嵴膜', value: 0 }, { label: '膜间隙', value: 0 }] },
-    { id: 'bio_m2', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '下列哪个是芳香烃？', options: [{ label: '甲烷', value: 0 }, { label: '苯', value: 8 }, { label: '乙醇', value: 0 }, { label: '丙酮', value: 0 }] },
-    { id: 'bio_m3', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: 'PCR 技术用于什么？', options: [{ label: '蛋白质纯化', value: 0 }, { label: 'DNA 扩增', value: 8 }, { label: '细胞培养', value: 0 }, { label: '色谱分析', value: 0 }] },
-    { id: 'bio_m4', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '氧化剂在反应中会？', options: [{ label: '失去电子', value: 0 }, { label: '得到电子', value: 8 }, { label: '释放质子', value: 0 }, { label: '释放中子', value: 0 }] },
-    { id: 'bio_m5', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '真核与原核的主要区别是有无？', options: [{ label: '细胞壁', value: 0 }, { label: '核膜包被的细胞核', value: 8 }, { label: '核糖体', value: 0 }, { label: '细胞膜', value: 0 }] },
-    { id: 'bio_m6', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '催化剂的作用是？', options: [{ label: '增加反应物浓度', value: 0 }, { label: '降低活化能', value: 8 }, { label: '改变平衡常数', value: 0 }, { label: '提高温度', value: 0 }] },
-    // advanced
-    { id: 'bio_a1', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'CRISPR-Cas9 中 Cas9 是什么？', options: [{ label: 'RNA 分子', value: 0 }, { label: '核酸内切酶', value: 8 }, { label: '病毒载体', value: 0 }, { label: '质粒', value: 0 }] },
-    { id: 'bio_a2', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'sp³ 杂化的键角约为？', options: [{ label: '180°', value: 0 }, { label: '120°', value: 0 }, { label: '109.5°', value: 8 }, { label: '90°', value: 0 }] },
-    { id: 'bio_a3', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'Western Blot 用于检测什么？', options: [{ label: 'DNA', value: 0 }, { label: '特定蛋白质', value: 8 }, { label: 'RNA', value: 0 }, { label: '代谢物', value: 0 }] },
-    { id: 'bio_a4', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'ΔG < 0 表示反应？', options: [{ label: '非自发', value: 0 }, { label: '自发', value: 8 }, { label: '平衡', value: 0 }, { label: '需催化剂', value: 0 }] },
-    { id: 'bio_a5', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: '离子通道门控机制不包括？', options: [{ label: '电压门控', value: 0 }, { label: '配体门控', value: 0 }, { label: '温度门控', value: 0 }, { label: '质量门控', value: 8 }] },
-    { id: 'bio_a6', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'NMR 谱图中化学位移的单位是？', options: [{ label: 'Hz', value: 0 }, { label: 'ppm', value: 8 }, { label: 'T', value: 0 }, { label: 'J/mol', value: 0 }] },
+    { id: 'bio_m1', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '三羧酸循环（TCA）发生在线粒体的哪里？', options: [opt('外膜', 0), opt('基质', 8), opt('嵴膜', 0), opt('膜间隙', 0)] },
+    { id: 'bio_m2', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '下列哪个是芳香烃？', options: [opt('甲烷', 0), opt('苯', 8), opt('乙醇', 0), opt('丙酮', 0)] },
+    { id: 'bio_m3', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: 'PCR 技术用于什么？', options: [opt('蛋白质纯化', 0), opt('DNA 扩增', 8), opt('细胞培养', 0), opt('色谱分析', 0)] },
+    { id: 'bio_m4', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '酶的化学本质主要是？', options: [opt('糖类', 0), opt('蛋白质', 8), opt('脂质', 0), opt('核酸', 0)] },
+    { id: 'bio_m5', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: '有丝分裂后期，什么结构被拉向两极？', options: [opt('同源染色体', 0), opt('姐妹染色单体', 8), opt('中心粒', 0), opt('核膜碎片', 0)] },
+    { id: 'bio_m6', dim: 'professional', difficulty: 'medium', profession: '生化 (化学/生物)' as ProfessionKey, text: 'H₂O 中氧原子的氧化数是？', options: [opt('0', 0), opt('-2', 8), opt('+2', 0), opt('-1', 0)] },
+
+    // advanced — 上限拉高
+    { id: 'bio_a1', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'CRISPR-Cas9 中 Cas9 是什么？', options: [opt('RNA 分子', 0), opt('核酸内切酶', 8), opt('病毒载体', 0), opt('质粒', 0)] },
+    { id: 'bio_a2', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'sp³ 杂化的键角约为？', options: [opt('180°', 0), opt('120°', 0), opt('109.5°', 8), opt('90°', 0)] },
+    { id: 'bio_a3', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'Western Blot 用于检测什么？', options: [opt('DNA', 0), opt('特定蛋白质', 8), opt('RNA', 0), opt('代谢物', 0)] },
+    { id: 'bio_a4', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: '米氏方程 V = V<sub>max</sub>[S] / (K<sub>m</sub> + [S]) 中 K<sub>m</sub> 表示？', options: [opt('最大反应速率', 0), opt('半饱和常数', 8), opt('底物浓度', 0), opt('抑制常数', 0)] },
+    { id: 'bio_a5', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: '一个碳原子连接四个不同基团，该碳称为？', options: [opt('伯碳', 0), opt('手性碳', 8), opt('季碳', 0), opt('羰基碳', 0)] },
+    { id: 'bio_a6', dim: 'professional', difficulty: 'advanced', profession: '生化 (化学/生物)' as ProfessionKey, text: 'Southern Blot 检测的目标分子是？', options: [opt('蛋白质', 0), opt('DNA', 8), opt('RNA', 0), opt('脂质', 0)] },
 ];
 
 // ─────────────── 商科/计算机 ───────────────
 const CS_Q: Question[] = [
-    // basic
-    { id: 'cs_b1', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: '二进制 1010 的十进制是？', options: [{ label: '8', value: 0 }, { label: '10', value: 8 }, { label: '12', value: 0 }, { label: '14', value: 0 }] },
-    { id: 'cs_b2', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: 'Excel 求和函数是？', options: [{ label: 'AVERAGE', value: 0 }, { label: 'SUM', value: 8 }, { label: 'COUNT', value: 0 }, { label: 'MAX', value: 0 }] },
-    { id: 'cs_b3', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: '<h1> 标签在 HTML 中表示？', options: [{ label: '段落', value: 0 }, { label: '一级标题', value: 8 }, { label: '链接', value: 0 }, { label: '图片', value: 0 }] },
-    { id: 'cs_b4', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: '一个字节 byte 由多少 bit 组成？', options: [{ label: '4', value: 0 }, { label: '8', value: 8 }, { label: '16', value: 0 }, { label: '32', value: 0 }] },
-    { id: 'cs_b5', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: '供给曲线通常向哪个方向倾斜？', options: [{ label: '向右上方', value: 8 }, { label: '向右下方', value: 0 }, { label: '水平', value: 0 }, { label: '垂直', value: 0 }] },
-    { id: 'cs_b6', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: 'SQL 中 SELECT...FROM 的作用是？', options: [{ label: '插入数据', value: 0 }, { label: '查询数据', value: 8 }, { label: '删除数据', value: 0 }, { label: '创建表', value: 0 }] },
+    // basic — 下限保持
+    { id: 'cs_b1', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: '二进制 1010 的十进制是？', options: [opt('8', 0), opt('10', 8), opt('12', 0), opt('14', 0)] },
+    { id: 'cs_b2', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: '一个字节 byte 由多少 bit 组成？', options: [opt('4', 0), opt('8', 8), opt('16', 0), opt('32', 0)] },
+    { id: 'cs_b3', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: 'SQL 中 SELECT ... FROM 的作用是？', options: [opt('插入数据', 0), opt('查询数据', 8), opt('删除数据', 0), opt('创建表', 0)] },
+    { id: 'cs_b4', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: 'HTML 的全称是？', options: [opt('HyperText Markup Language', 8), opt('High Tech Modern Language', 0), opt('HyperTransfer Mode Link', 0), opt('Home Tool Markup Logic', 0)] },
+    { id: 'cs_b5', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: 'IPv4 地址由多少位二进制组成？', options: [opt('16 位', 0), opt('32 位', 8), opt('64 位', 0), opt('128 位', 0)] },
+    { id: 'cs_b6', dim: 'professional', difficulty: 'basic', profession: '商科/计算机' as ProfessionKey, text: 'ROI 是什么的缩写？', options: [opt('Return On Investment', 8), opt('Rate Of Interest', 0), opt('Risk Of Inflation', 0), opt('Revenue Over Income', 0)] },
+
     // medium
-    { id: 'cs_m1', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: '时间复杂度 O(n log n) 属于哪种排序？', options: [{ label: '冒泡', value: 0 }, { label: '归并排序', value: 8 }, { label: '插入', value: 0 }, { label: '选择', value: 0 }] },
-    { id: 'cs_m2', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: 'NPV（净现值）为负时，项目应该？', options: [{ label: '立即投资', value: 0 }, { label: '不建议投资', value: 8 }, { label: '增加杠杆', value: 0 }, { label: '无法判断', value: 0 }] },
-    { id: 'cs_m3', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: '栈 Stack 的特点是？', options: [{ label: 'FIFO', value: 0 }, { label: 'LIFO', value: 8 }, { label: '随机存取', value: 0 }, { label: '按索引', value: 0 }] },
-    { id: 'cs_m4', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: '边际成本等于边际收益时，企业达到？', options: [{ label: '亏损最大', value: 0 }, { label: '利润最大', value: 8 }, { label: '收入最小', value: 0 }, { label: '收支平衡', value: 0 }] },
-    { id: 'cs_m5', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: 'RESTful API 中 GET 请求用于？', options: [{ label: '创建资源', value: 0 }, { label: '获取资源', value: 8 }, { label: '更新资源', value: 0 }, { label: '删除资源', value: 0 }] },
-    { id: 'cs_m6', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: 'CAP 定理中，P 代表什么？', options: [{ label: '性能', value: 0 }, { label: '分区容忍性', value: 8 }, { label: '一致性', value: 0 }, { label: '持久化', value: 0 }] },
-    // advanced
-    { id: 'cs_a1', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: '哈希冲突的开放寻址法属于？', options: [{ label: '链表法', value: 0 }, { label: '线性探测', value: 8 }, { label: '布隆过滤', value: 0 }, { label: 'LRU 缓存', value: 0 }] },
-    { id: 'cs_a2', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: 'Black-Scholes 模型用于？', options: [{ label: '用户行为预测', value: 0 }, { label: '期权定价', value: 8 }, { label: '信用评分', value: 0 }, { label: '库存管理', value: 0 }] },
-    { id: 'cs_a3', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: 'TCP 三次握手中第二次包带什么标志？', options: [{ label: 'SYN', value: 0 }, { label: 'SYN+ACK', value: 8 }, { label: 'ACK', value: 0 }, { label: 'FIN', value: 0 }] },
-    { id: 'cs_a4', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: '费雪方程式 MV=PY 中 M 是？', options: [{ label: '通货膨胀率', value: 0 }, { label: '货币供给量', value: 8 }, { label: '实际产出', value: 0 }, { label: '流通速度', value: 0 }] },
-    { id: 'cs_a5', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: 'Redis 的持久化机制 RDB 是指？', options: [{ label: '追加日志', value: 0 }, { label: '内存快照', value: 8 }, { label: '主从复制', value: 0 }, { label: '数据结构编码', value: 0 }] },
-    { id: 'cs_a6', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: '詹森指数（Jensen\'s alpha）衡量什么？', options: [{ label: '波动率', value: 0 }, { label: '超额收益能力', value: 8 }, { label: '夏普比率', value: 0 }, { label: '贝塔系数', value: 0 }] },
+    { id: 'cs_m1', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: '时间复杂度 O(n log n) 属于哪种排序？', options: [opt('冒泡排序', 0), opt('归并排序', 8), opt('插入排序', 0), opt('选择排序', 0)] },
+    { id: 'cs_m2', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: 'NPV（净现值）为负时，项目应该？', options: [opt('立即投资', 0), opt('不建议投资', 8), opt('增加杠杆', 0), opt('无法判断', 0)] },
+    { id: 'cs_m3', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: '栈 Stack 的特点是？', options: [opt('FIFO', 0), opt('LIFO', 8), opt('随机存取', 0), opt('按索引', 0)] },
+    { id: 'cs_m4', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: 'CAPM 模型中 β 系数衡量的是？', options: [opt('总风险', 0), opt('系统性风险', 8), opt('非系统性风险', 0), opt('流动性风险', 0)] },
+    { id: 'cs_m5', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: '二分查找的前提条件是什么？', options: [opt('链表存储', 0), opt('数组有序', 8), opt('数据量小于 100', 0), opt('使用递归', 0)] },
+    { id: 'cs_m6', dim: 'professional', difficulty: 'medium', profession: '商科/计算机' as ProfessionKey, text: '哈希表（Hash Table）的平均查找时间复杂度是？', options: [opt('O(n)', 0), opt('O(1)', 8), opt('O(log n)', 0), opt('O(n²)', 0)] },
+
+    // advanced — 上限拉高
+    { id: 'cs_a1', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: 'TCP 三次握手中第二次包带什么标志？', options: [opt('SYN', 0), opt('SYN+ACK', 8), opt('ACK', 0), opt('FIN', 0)] },
+    { id: 'cs_a2', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: 'Black-Scholes 模型用于？', options: [opt('用户行为预测', 0), opt('期权定价', 8), opt('信用评分', 0), opt('库存管理', 0)] },
+    { id: 'cs_a3', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: 'Redis 的持久化机制 RDB 是指？', options: [opt('追加日志', 0), opt('内存快照', 8), opt('主从复制', 0), opt('数据结构编码', 0)] },
+    { id: 'cs_a4', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: '分布式 CAP 定理中的 P 代表什么？', options: [opt('性能 (Performance)', 0), opt('分区容错 (Partition Tolerance)', 8), opt('持久性 (Persistence)', 0), opt('并行 (Parallelism)', 0)] },
+    { id: 'cs_a5', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: 'B+树中，所有实际数据存储在？', options: [opt('内部节点', 0), opt('叶子节点', 8), opt('根节点', 0), opt('索引节点', 0)] },
+    { id: 'cs_a6', dim: 'professional', difficulty: 'advanced', profession: '商科/计算机' as ProfessionKey, text: '死锁的四个必要条件不包括？', options: [opt('互斥条件', 0), opt('优先级抢占', 8), opt('持有并等待', 0), opt('循环等待', 0)] },
 ];
 
 // ─────────────── 文史政 (历史/政治) ───────────────
 const HIS_Q: Question[] = [
-    // basic
-    { id: 'his_b1', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '中国第一个统一王朝是？', options: [{ label: '商朝', value: 0 }, { label: '秦朝', value: 8 }, { label: '周朝', value: 0 }, { label: '汉朝', value: 0 }] },
-    { id: 'his_b2', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '《红楼梦》的作者是？', options: [{ label: '施耐庵', value: 0 }, { label: '曹雪芹', value: 8 }, { label: '罗贯中', value: 0 }, { label: '吴承恩', value: 0 }] },
-    { id: 'his_b3', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '二战中诺曼底登陆发生在哪一年？', options: [{ label: '1942', value: 0 }, { label: '1944', value: 8 }, { label: '1943', value: 0 }, { label: '1945', value: 0 }] },
-    { id: 'his_b4', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '以下哪个是三权分立中的三权之一？', options: [{ label: '立法权', value: 8 }, { label: '征税权', value: 0 }, { label: '战争权', value: 0 }, { label: '教育权', value: 0 }] },
-    { id: 'his_b5', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '文艺复兴发源于哪个国家？', options: [{ label: '法国', value: 0 }, { label: '意大利', value: 8 }, { label: '英国', value: 0 }, { label: '德国', value: 0 }] },
-    { id: 'his_b6', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: 'UN 安理会常任理事国不包括？', options: [{ label: '法国', value: 0 }, { label: '英国', value: 0 }, { label: '德国', value: 8 }, { label: '俄罗斯', value: 0 }] },
+    // basic — 下限保持
+    { id: 'his_b1', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '中国第一个大一统王朝是？', options: [opt('商朝', 0), opt('秦朝', 8), opt('周朝', 0), opt('汉朝', 0)] },
+    { id: 'his_b2', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '《红楼梦》的作者是？', options: [opt('施耐庵', 0), opt('曹雪芹', 8), opt('罗贯中', 0), opt('吴承恩', 0)] },
+    { id: 'his_b3', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '以下哪个是三权分立中的三权之一？', options: [opt('立法权', 8), opt('征税权', 0), opt('战争权', 0), opt('教育权', 0)] },
+    { id: 'his_b4', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '第二次世界大战结束于哪一年？', options: [opt('1943', 0), opt('1945', 8), opt('1947', 0), opt('1950', 0)] },
+    { id: 'his_b5', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '文艺复兴的发源地是？', options: [opt('法国', 0), opt('意大利', 8), opt('英国', 0), opt('德国', 0)] },
+    { id: 'his_b6', dim: 'professional', difficulty: 'basic', profession: '文史政 (历史/政治)' as ProfessionKey, text: '联合国总部设在哪个城市？', options: [opt('日内瓦', 0), opt('纽约', 8), opt('巴黎', 0), opt('伦敦', 0)] },
+
     // medium
-    { id: 'his_m1', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '《社会契约论》的作者是？', options: [{ label: '孟德斯鸠', value: 0 }, { label: '卢梭', value: 8 }, { label: '伏尔泰', value: 0 }, { label: '狄德罗', value: 0 }] },
-    { id: 'his_m2', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '唐朝由盛转衰的标志性事件是？', options: [{ label: '黄巾起义', value: 0 }, { label: '安史之乱', value: 8 }, { label: '澶渊之盟', value: 0 }, { label: '陈桥兵变', value: 0 }] },
-    { id: 'his_m3', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '布雷顿森林体系确立了哪种货币的国际地位？', options: [{ label: '英镑', value: 0 }, { label: '美元', value: 8 }, { label: '日元', value: 0 }, { label: '欧元', value: 0 }] },
-    { id: 'his_m4', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '以下哪个不属于唐宋八大家？', options: [{ label: '苏轼', value: 0 }, { label: '欧阳修', value: 0 }, { label: '李清照', value: 8 }, { label: '柳宗元', value: 0 }] },
-    { id: 'his_m5', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '威斯特伐利亚体系确立了国际关系中的什么原则？', options: [{ label: '霸权', value: 0 }, { label: '主权平等', value: 8 }, { label: '均势', value: 0 }, { label: '集体安全', value: 0 }] },
-    { id: 'his_m6', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '史记的作者是？', options: [{ label: '班固', value: 0 }, { label: '司马迁', value: 8 }, { label: '范晔', value: 0 }, { label: '陈寿', value: 0 }] },
-    // advanced
-    { id: 'his_a1', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '福柯在《规训与惩罚》中提出的核心概念是？', options: [{ label: '社会契约', value: 0 }, { label: '全景敞视主义', value: 8 }, { label: '阶级意识', value: 0 }, { label: '科层制', value: 0 }] },
-    { id: 'his_a2', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '春秋三传不包括？', options: [{ label: '左传', value: 0 }, { label: '公羊传', value: 0 }, { label: '周礼', value: 8 }, { label: '谷梁传', value: 0 }] },
-    { id: 'his_a3', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '三十年战争结束后签订的条约是？', options: [{ label: '乌德勒支条约', value: 0 }, { label: '威斯特伐利亚和约', value: 8 }, { label: '明斯特和约', value: 0 }, { label: '巴黎和约', value: 0 }] },
-    { id: 'his_a4', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '胡适提出的文学革命主张是？', options: [{ label: '文言复兴', value: 0 }, { label: '八不主义', value: 8 }, { label: '民族主义', value: 0 }, { label: '浪漫主义', value: 0 }] },
-    { id: 'his_a5', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '柏拉图《理想国》中卫道士阶层的美德是？', options: [{ label: '智慧', value: 8 }, { label: '勇气', value: 0 }, { label: '节制', value: 0 }, { label: '正义', value: 0 }] },
-    { id: 'his_a6', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '汉娜·阿伦特提出的"平庸之恶"针对的是？', options: [{ label: '极端主义', value: 0 }, { label: '官僚体制中的麻木服从', value: 8 }, { label: '战争罪行', value: 0 }, { label: '意识形态冲突', value: 0 }] },
+    { id: 'his_m1', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '《社会契约论》的作者是？', options: [opt('孟德斯鸠', 0), opt('卢梭', 8), opt('伏尔泰', 0), opt('狄德罗', 0)] },
+    { id: 'his_m2', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '唐朝由盛转衰的标志性事件是？', options: [opt('黄巾起义', 0), opt('安史之乱', 8), opt('澶渊之盟', 0), opt('陈桥兵变', 0)] },
+    { id: 'his_m3', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '布雷顿森林体系确立了哪种货币的国际地位？', options: [opt('英镑', 0), opt('美元', 8), opt('日元', 0), opt('欧元', 0)] },
+    { id: 'his_m4', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '霍布斯在《利维坦》中主张什么？', options: [opt('三权分立', 0), opt('绝对君主制（社会契约论）', 8), opt('直接民主', 0), opt('无政府主义', 0)] },
+    { id: 'his_m5', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '冷战开始的标志性事件是？', options: [opt('柏林墙修建', 0), opt('杜鲁门主义出台', 8), opt('古巴导弹危机', 0), opt('朝鲜战争', 0)] },
+    { id: 'his_m6', dim: 'professional', difficulty: 'medium', profession: '文史政 (历史/政治)' as ProfessionKey, text: '王安石变法发生在哪个朝代？', options: [opt('唐朝', 0), opt('北宋', 8), opt('南宋', 0), opt('明朝', 0)] },
+
+    // advanced — 上限拉高
+    { id: 'his_a1', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '福柯在《规训与惩罚》中提出的核心概念是？', options: [opt('社会契约', 0), opt('全景敞视主义', 8), opt('阶级意识', 0), opt('科层制', 0)] },
+    { id: 'his_a2', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '三十年战争结束后签订的条约是？', options: [opt('乌德勒支条约', 0), opt('威斯特伐利亚和约', 8), opt('明斯特和约', 0), opt('巴黎和约', 0)] },
+    { id: 'his_a3', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '汉娜·阿伦特提出的"平庸之恶"针对的是？', options: [opt('极端主义', 0), opt('官僚体制中的麻木服从', 8), opt('战争罪行', 0), opt('意识形态冲突', 0)] },
+    { id: 'his_a4', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '萨义德《东方学》的核心论点是？', options: [opt('东方文明优于西方', 0), opt('"东方"是被西方话语建构出来的', 8), opt('东西方文明必然冲突', 0), opt('东方应全盘西化', 0)] },
+    { id: 'his_a5', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '年鉴学派代表人物布罗代尔提出的核心概念是？', options: [opt('阶级斗争', 0), opt('长时段（longue durée）', 8), opt('文明冲突', 0), opt('历史终结论', 0)] },
+    { id: 'his_a6', dim: 'professional', difficulty: 'advanced', profession: '文史政 (历史/政治)' as ProfessionKey, text: '罗尔斯《正义论》中"无知之幕"的目的是？', options: [opt('隐藏真实身份以逃避责任', 0), opt('在不知道自身处境的前提下设计公正规则', 8), opt('政府信息不公开', 0), opt('战争时期的情报封锁', 0)] },
 ];
 
 // ─────────────── 导出 ───────────────
@@ -115,18 +129,20 @@ export const PROFESSION_BANKS: Record<ProfessionKey, Question[]> = {
 };
 
 /**
- * 从题库中为指定专业抽取 9 题（每难度 3 题，shuffle 后取前 3）
+ * 从 18 题题库中，按 basic / medium / advanced 各随机抽取 3 题，共返回 9 题
  */
-export function pickQuestions(profession: ProfessionKey, countPerDifficulty = 3): Question[] {
+export function pickQuestions(profession: ProfessionKey): Question[] {
     const pool = PROFESSION_BANKS[profession] ?? [];
-    const difficulties = ['basic', 'medium', 'advanced'] as const;
-    const result: Question[] = [];
 
-    for (const diff of difficulties) {
-        const candidates = pool.filter(q => q.difficulty === diff);
-        const shuffled = [...candidates].sort(() => Math.random() - 0.5);
-        result.push(...shuffled.slice(0, countPerDifficulty));
-    }
+    const basic = pool.filter(q => q.difficulty === 'basic');
+    const medium = pool.filter(q => q.difficulty === 'medium');
+    const advanced = pool.filter(q => q.difficulty === 'advanced');
 
-    return result;
+    const shuffle = (arr: Question[]) => [...arr].sort(() => Math.random() - 0.5);
+
+    return [
+        ...shuffle(basic).slice(0, 3),
+        ...shuffle(medium).slice(0, 3),
+        ...shuffle(advanced).slice(0, 3),
+    ];
 }
