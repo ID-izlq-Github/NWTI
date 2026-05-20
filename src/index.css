@@ -124,6 +124,20 @@ button:disabled {
   color: var(--accent);
 }
 
+.btn-outline {
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
 #root {
   min-height: 100vh;
 }
