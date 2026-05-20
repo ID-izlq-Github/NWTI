@@ -18,10 +18,10 @@ function professionFromQ1Value(value: number): ProfessionKey | null {
 // ========== 题目构建 (不含 Q1) ==========
 
 function buildRemainingQuestions(profession: ProfessionKey): Question[] {
-    const profQs = pickQuestions(profession, 3);
+    const profQs = pickQuestions(profession);
     return [
         ...SELF_EVAL_QS, // Q2-Q4: 自评 (维度 2/3/4)
-        ...profQs,       // 3 题专业
+        ...profQs,       // 9 题专业 (3 难度 × 3 题)
         ...RESP_QS,      // 9 题责任
         ...MORAL_QS,     // 9 题道德
         ...FUNNY_QS,     // 9 题乐子

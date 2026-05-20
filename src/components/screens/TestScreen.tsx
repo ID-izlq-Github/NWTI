@@ -12,10 +12,10 @@ interface Phase {
 
 function getPhases(): { phases: Phase[]; phaseByIndex: Map<number, number> } {
     const phases: Phase[] = [
-        { label: '专业选择', start: 0, end: 0 },
-        { label: '自评', start: 1, end: 3 },
-        { label: DIM_ICONS.professional + ' ' + DIM_NAMES.professional, start: 4, end: 6 },
-        { label: '📋 综合评估', start: 7, end: 33 },
+        { label: '专业方向', start: 0, end: 0 },
+        { label: '自我评价', start: 1, end: 3 },
+        { label: DIM_ICONS.professional + ' ' + DIM_NAMES.professional, start: 4, end: 12 },
+        { label: '综合评估', start: 13, end: 39 },
     ];
     const phaseByIndex = new Map<number, number>();
     for (const [pi, p] of phases.entries()) {
@@ -119,15 +119,24 @@ export function TestScreen() {
             <div className="question-card">
                 <div className="question-meta">
                     <span className="question-number">第 {currentIndex + 1} 题</span>
-                    {currentQuestion.dim === 'professional' ? (
-                        <span className="question-dim">
-                            {DIM_ICONS[currentQuestion.dim]} {DIM_NAMES[currentQuestion.dim]}
-                        </span>
-                    ) : (
-                        <span className="question-dim obscure">
-                            📋 综合评估
-                        </span>
-                    )}
+                    {(() => {
+                        if (currentQuestion.dim === 'professional' && currentIndex >= 4) {
+                            return (
+                                <span className="question-dim">
+                                    {DIM_ICONS[currentQuestion.dim]} {DIM_NAMES[currentQuestion.dim]}
+                                </span>
+                            );
+                        }
+                        // Q1 和自评题不展示维度标签
+                        if (currentIndex <= 3) {
+                            return <span className="question-dim" />;
+                        }
+                        return (
+                            <span className="question-dim obscure">
+                                📋 综合评估
+                            </span>
+                        );
+                    })()}
                     {currentQuestion.difficulty && (
                         <span className={`difficulty-badge ${currentQuestion.difficulty}`}>
                             {currentQuestion.difficulty === 'basic' ? '基础' :
