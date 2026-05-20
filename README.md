@@ -7,7 +7,7 @@
 <p align="center">
   <em>🎭 看看你最符合NW里哪一个人的气质。</em>
   <br/>
-  <em>Who the heck are you? Let science (probably) tell you!</em>
+  <em>Welcome to fucking SLFBN!</em>
 </p>
 
 <p align="center">
