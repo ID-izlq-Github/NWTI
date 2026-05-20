@@ -36,7 +36,7 @@ export const RESULTS: ResultEntry[] = [
             ['L', 'M', 'H'], // 道德
             ['M', 'H'],    // 乐子
         ],
-        comment: '最强的Nagotiator，如如之力出神入化，NW最坚固的盾',
+        comment: '最强的Nagotiator，如如之力出神入化，NW最强的太极大师',
     },
     {
         result: 'Annie Z',
@@ -72,9 +72,9 @@ export const RESULTS: ResultEntry[] = [
         result: '孙静',
         pattern: [
             ['H'],         // 专业
-            ['M'],         // 责任
-            ['M', 'H'],    // 道德
-            ['L', 'M'],    // 乐子
+            ['H'],         // 责任
+            ['L'],         // 道德
+            ['L'],         // 乐子
         ],
         comment: '学霸但不爱管闲事，做人还算正派',
     },
@@ -136,17 +136,17 @@ export const RESULTS: ResultEntry[] = [
             ['M'],         // 道德
             ['L'],         // 乐子
         ],
-        comment: '运动鞋，',
+        comment: '运动鞋，紧身裤；我叫荣生你记住',
     },
     {
         result: 'YYY',
         pattern: [
             ['M'],         // 专业
             ['L', 'M'],    // 责任
-            ['M', 'H'],    // 道德
-            ['M', 'H'],    // 乐子
+            ['M'],    // 道德
+            ['M'],    // 乐子
         ],
-        comment: '能力强、性格好、还有趣，团队里的宝藏',
+        comment: '全局来看。。。是个好人',
     },
     {
         result: 'Jason Kim',
@@ -154,19 +154,19 @@ export const RESULTS: ResultEntry[] = [
             ['L'],         // 专业
             ['L', 'M'],    // 责任
             ['L'],         // 道德
-            ['L', 'M'],    // 乐子
+            ['M'],    // 乐子
         ],
-        comment: '专业拉满但其他维度随缘，纯粹的技术宅',
+        comment: '傻逼，和引飚先生过一辈子去吧',
     },
     {
         result: 'Arien Xu',
         pattern: [
             ['M', 'H'],    // 专业
-            ['M', 'H'],    // 责任
+            ['H'],    // 责任
             ['M', 'H'],    // 道德
             ['L', 'M'],    // 乐子
         ],
-        comment: '全维度中高唯独不太搞笑，正经到令人敬畏',
+        comment: '传奇打工人，宁外最牢的非牢字辈',
     },
 ];
 
