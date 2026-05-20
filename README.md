@@ -5,7 +5,7 @@
 <h1 align="center">NWTI — NW Typology Indicator</h1>
 
 <p align="center">
-  <em>🎭 你到底是谁？让科学（大概）来告诉你！</em>
+  <em>🎭 看看你最符合NW里哪一个人的气质。</em>
   <br/>
   <em>Who the heck are you? Let science (probably) tell you!</em>
 </p>
