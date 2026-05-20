@@ -259,6 +259,8 @@
   border: 2px solid var(--border);
   color: var(--text-muted);
   transition: all 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-dot.answered {
@@ -303,6 +305,11 @@
   font-size: 13px;
   color: var(--text-h);
   font-weight: 500;
+}
+
+.question-dim.obscure {
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .difficulty-badge {
@@ -354,6 +361,8 @@
   font-size: 15px;
   color: var(--text-h);
   transition: all 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .option-btn:hover {
@@ -406,6 +415,43 @@
 
 .action-hint {
   font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ========== Footer ========== */
+.app-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 0 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.github-link:hover {
+  color: var(--text-h);
+}
+
+.github-icon {
+  flex-shrink: 0;
+}
+
+.footer-divider {
+  color: var(--border);
+}
+
+.footer-copy {
   color: var(--text-muted);
 }
 
@@ -568,6 +614,13 @@
   display: flex;
   justify-content: center;
   padding: 8px 0;
+}
+
+.result-actions-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .result-actions .btn-primary {
