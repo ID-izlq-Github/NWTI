@@ -26,7 +26,7 @@ export default function App() {
         <AppRouter />
         <footer className="app-footer">
           <a
-            href="https://github.com/your-username/your-repo"
+            href="https://github.com/ID-izlq-Github/NWTI"
             target="_blank"
             rel="noopener noreferrer"
             className="github-link"
