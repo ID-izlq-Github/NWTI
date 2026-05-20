@@ -1,11 +1,38 @@
+import { useRef } from 'react';
 import { useTest } from '../../context/TestContext';
 import { DIM_NAMES, DIM_ICONS, DIM_DESCS } from '../../data/dimensions';
-import type { DimId } from '../../types';
+import type { DimId, TestResult } from '../../types';
 
 const DIM_ORDER: DimId[] = ['professional', 'responsibility', 'morality', 'funny'];
 
 export function IntroScreen() {
-    const { startTest } = useTest();
+    const { startTest, loadResult } = useTest();
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleImportClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            try {
+                const parsed = JSON.parse(evt.target?.result as string) as TestResult;
+                if (!parsed.dimResults || !Array.isArray(parsed.dimResults)) {
+                    alert('无效的结果文件格式');
+                    return;
+                }
+                loadResult(parsed);
+            } catch {
+                alert('无法解析 JSON 文件，请确认文件格式正确');
+            }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+    };
 
     return (
         <div className="intro-screen">
@@ -44,11 +71,21 @@ export function IntroScreen() {
                 </ul>
             </div>
 
-            {/* 开始测试按钮 */}
+            {/* 开始测试 + 导入结果 */}
             <div className="intro-start">
                 <button className="btn-primary btn-start" onClick={startTest}>
                     开始测试 →
                 </button>
+                <button className="btn-outline" onClick={handleImportClick}>
+                    📤 导入结果
+                </button>
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".json"
+                    style={{ display: 'none' }}
+                    onChange={handleImport}
+                />
             </div>
         </div>
     );
