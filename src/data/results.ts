@@ -21,18 +21,18 @@ export const RESULTS: ResultEntry[] = [
     {
         result: 'XR',
         pattern: [
-            ['H'],         // 专业
-            ['H'],         // 责任
+            ['L'],         // 专业
+            ['L', 'M'],         // 责任
             ['M', 'H'],    // 道德
-            ['L', 'M'],    // 乐子
+            ['L'],    // 乐子
         ],
         comment: '不敢说',
     },
     {
         result: '呀风',
         pattern: [
-            ['H'],         // 专业
-            ['H'],         // 责任
+            ['L', 'M'],         // 专业
+            ['L'],         // 责任
             ['L', 'M', 'H'], // 道德
             ['M', 'H'],    // 乐子
         ],
@@ -41,10 +41,10 @@ export const RESULTS: ResultEntry[] = [
     {
         result: 'Annie Z',
         pattern: [
-            ['M', 'H'],    // 专业
+            ['M'],    // 专业
             ['M', 'H'],    // 责任
-            ['M', 'H'],    // 道德
-            ['M', 'H'],    // 乐子
+            ['L'],    // 道德
+            ['H'],    // 乐子
         ],
         comment: '红橙黄绿蓝紫 红橙黄绿蓝紫',
     },
@@ -56,7 +56,7 @@ export const RESULTS: ResultEntry[] = [
             ['L', 'M'],    // 道德
             ['L', 'M'],    // 乐子
         ],
-        comment: '技术过硬但做人灵活，NW的名誉守门员',
+        comment: '「I don\'t fucking care about your grade」',
     },
     {
         result: '阿甘',
@@ -66,7 +66,7 @@ export const RESULTS: ResultEntry[] = [
             ['H'],         // 道德
             ['L'],         // 乐子
         ],
-        comment: '专业中等但极度靠谱，老实人的天花板',
+        comment: '阿甘是真的帅',
     },
     {
         result: '孙静',
@@ -96,52 +96,52 @@ export const RESULTS: ResultEntry[] = [
             ['L', 'M'],    // 道德
             ['L'],         // 乐子
         ],
-        comment: '各方面都偏弱，NW的底层打工人',
+        comment: '传奇嘉豪',
     },
     {
         result: '(牢) Nick Lupous',
         pattern: [
-            ['L', 'M'],    // 专业
-            ['L'],         // 责任
-            ['L', 'M'],    // 道德
-            ['M', 'H'],    // 乐子
+            ['H'],    // 专业
+            ['H'],         // 责任
+            ['H'],    // 道德
+            ['L'],    // 乐子
         ],
         comment: '专业不行但人挺乐呵，NW的气氛组',
     },
     {
-        result: '(牢) Matt Porteous',
+        result: '(牢) YYF',
         pattern: [
-            ['L', 'M'],    // 专业
-            ['M'],         // 责任
-            ['L', 'M'],    // 道德
-            ['L', 'M'],    // 乐子
+            ['H'],    // 专业
+            ['H'],         // 责任
+            ['M', 'H'],    // 道德
+            ['H'],    // 乐子
         ],
-        comment: '各方面中规中矩偏弱，NW的沉默大多数',
+        comment: 'NW引进的唯一能人，可惜变成牢字辈了',
     },
     {
         result: '(牢) Rocky',
         pattern: [
-            ['M'],         // 专业
-            ['L'],         // 责任
-            ['L', 'M'],    // 道德
-            ['M', 'H'],    // 乐子
+            ['H'],         // 专业
+            ['L', 'M'],    // 责任
+            ['M', 'H'],    // 道德
+            ['L'],         // 乐子
         ],
-        comment: '专业还行但不管事，道德灵活乐子拉满',
+        comment: '最有用的英语老师',
     },
     {
         result: '(牢) 黄荣生',
         pattern: [
-            ['L', 'M'],    // 专业
-            ['L'],         // 责任
-            ['L'],         // 道德
+            ['H'],         // 专业
+            ['H'],         // 责任
+            ['M'],         // 道德
             ['L'],         // 乐子
         ],
-        comment: '全面偏弱，NW的隐形人',
+        comment: '运动鞋，',
     },
     {
         result: 'YYY',
         pattern: [
-            ['M', 'H'],    // 专业
+            ['M'],         // 专业
             ['L', 'M'],    // 责任
             ['M', 'H'],    // 道德
             ['M', 'H'],    // 乐子
