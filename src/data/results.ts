@@ -151,7 +151,7 @@ export const RESULTS: ResultEntry[] = [
     {
         result: 'Jason Kim',
         pattern: [
-            ['H'],         // 专业
+            ['L'],         // 专业
             ['L', 'M'],    // 责任
             ['L'],         // 道德
             ['L', 'M'],    // 乐子
