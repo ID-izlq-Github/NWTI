@@ -61,6 +61,8 @@ export interface ResultEntry {
     pattern: PatternTuple;
     /** 评语 */
     comment: string;
+    /** 详细评价 (比评语更长的解读) */
+    detail: string;
 }
 
 // ========== 计算结果 ==========
