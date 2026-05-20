@@ -8,16 +8,16 @@ import { findResult } from '../data/results';
 
 /** 将原始分 (0-8) 映射为 L / M / H */
 export function scoreToLevel(score: number): Level {
-    if (score <= 3) return 'L';
-    if (score <= 6) return 'M';
-    return 'H';    // 7-8
+    if (score <= 2) return 'L';
+    if (score <= 5) return 'M';
+    return 'H';    // 6-8
 }
 
 export function levelToScoreRange(level: Level): [number, number] {
     switch (level) {
-        case 'L': return [0, 3];
-        case 'M': return [4, 6];
-        case 'H': return [7, 8];
+        case 'L': return [0, 2];
+        case 'M': return [3, 5];
+        case 'H': return [6, 8];
     }
 }
 
@@ -45,11 +45,11 @@ export function calcPenalty(rawScore: number, selfEvalScore: 0 | 1 | 2): number 
 
     // 自评 H (2) — 严格惩罚
     if (selfEvalScore === 2) {
-        // 实考高(≥7)无惩罚，实考中(4-6)扣 2，实考低(≤3)扣 4
+        // 实考高(≥7)无惩罚，实考中(4-6)扣 2，实考低(≤3)扣 3
         // 但最终不能低于 0
         if (rawScore >= 7) return 0;
         if (rawScore >= 4) return 2;
-        return Math.min(4, rawScore); // 不会扣成负数
+        return Math.min(3, rawScore); // 不会扣成负数
     }
 
     return 0;
