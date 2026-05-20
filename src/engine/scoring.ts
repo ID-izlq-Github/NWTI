@@ -22,34 +22,33 @@ export function levelToScoreRange(level: Level): [number, number] {
 }
 
 // ================================================
-// 自评偏差惩罚 (渐进式扣分)
+// 自评偏差惩罚 (已减轻惩罚力度)
 // ================================================
 
 /**
  * 惩罚规则：
  * 自评 0 (L) → 实考分直接使用，无惩罚 (L 默认最少置信)
- * 自评 1 (M) → 中等惩罚曲线
- * 自评 2 (H) → 高惩罚曲线 (因为自视过高)
+ * 自评 1 (M) → 轻微惩罚曲线
+ * 自评 2 (H) → 适度惩罚曲线
  */
 export function calcPenalty(rawScore: number, selfEvalScore: 0 | 1 | 2): number {
     // 自评 L (0) — 不做惩罚，完全信任实考
     if (selfEvalScore === 0) return 0;
 
-    // 自评 M (1) — 中等扣分
+    // 自评 M (1) — 轻微扣分
     if (selfEvalScore === 1) {
-        // 实考高(≥6)无惩罚，实考中(3-5)扣 1，实考低(≤2)扣 2
-        if (rawScore >= 6) return 0;
+        // 实考高(≥5)无惩罚，实考中(3-4)扣 1，实考低(≤2)扣 1
+        if (rawScore >= 5) return 0;
         if (rawScore >= 3) return 1;
-        return 2;
+        return 1;
     }
 
-    // 自评 H (2) — 严格惩罚
+    // 自评 H (2) — 适度惩罚
     if (selfEvalScore === 2) {
-        // 实考高(≥7)无惩罚，实考中(4-6)扣 2，实考低(≤3)扣 3
-        // 但最终不能低于 0
+        // 实考高(≥7)无惩罚，实考中(4-6)扣 1，实考低(≤3)扣 2
         if (rawScore >= 7) return 0;
-        if (rawScore >= 4) return 2;
-        return Math.min(3, rawScore); // 不会扣成负数
+        if (rawScore >= 4) return 1;
+        return Math.min(2, rawScore);
     }
 
     return 0;
