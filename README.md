@@ -81,13 +81,6 @@ src/
 - **CSS Variables** — 几行变量控制全局主题换肤
 - **零运行时依赖** — 除了 React 本体，不需要额外 npm 包
 
-### 📦 部署
-
-部署到 GitHub Pages 只需两步：
-
-1. 编辑 `vite.config.ts`，取消注释 `base: '/你的仓库名/'`
-2. `npm run build && npx gh-pages -d dist`
-
 ---
 
 ## 🇬🇧 English
@@ -145,12 +138,6 @@ src/
 - **CSS Variables** — one-line theming
 - **Zero runtime dependencies** — just React
 
-### 📦 Deployment
-
-Deploy to GitHub Pages in two steps:
-
-1. Edit `vite.config.ts`, uncomment `base: '/your-repo-name/'`
-2. `npm run build && npx gh-pages -d dist`
 
 ---
 
