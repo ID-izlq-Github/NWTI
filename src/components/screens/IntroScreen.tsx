@@ -6,7 +6,7 @@ import type { DimId, TestResult } from '../../types';
 const DIM_ORDER: DimId[] = ['professional', 'responsibility', 'morality', 'funny'];
 
 export function IntroScreen() {
-    const { startTest, loadResult } = useTest();
+    const { startTest, loadResult, goDonate } = useTest();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleImportClick = () => {
@@ -78,6 +78,9 @@ export function IntroScreen() {
                 </button>
                 <button className="btn-outline" onClick={handleImportClick}>
                     📤 导入结果
+                </button>
+                <button className="btn-outline donate-intro-btn" onClick={goDonate}>
+                    ❤️ 打赏
                 </button>
                 <input
                     ref={fileInputRef}

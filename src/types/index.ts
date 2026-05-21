@@ -95,11 +95,13 @@ export interface TestResult {
 
 // ========== 测试状态 ==========
 
-export type Screen = 'intro' | 'test' | 'result';
+export type Screen = 'intro' | 'test' | 'result' | 'donate';
 
 export interface TestState {
     /** 当前屏幕 */
     screen: Screen;
+    /** 来源页面 (供 donate 页返回) */
+    previousScreen: Screen;
     /** Q1 - 选择的专业 */
     profession: ProfessionKey | null;
     /** 当前题目索引 (在 questions 数组中的位置) */

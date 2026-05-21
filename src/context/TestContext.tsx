@@ -34,6 +34,8 @@ type TestAction =
     | { type: 'START_TEST' }
     | { type: 'ANSWER'; questionId: string; value: number }
     | { type: 'GO_BACK'; targetIndex: number }
+    | { type: 'GO_DONATE' }
+    | { type: 'RETURN' }
     | { type: 'SUBMIT' }
     | { type: 'RESTART' }
     | { type: 'LOAD_RESULT'; result: TestState['result'] };
@@ -42,6 +44,7 @@ type TestAction =
 
 const initialState: TestState = {
     screen: 'intro',
+    previousScreen: 'intro',
     profession: null,
     currentIndex: 0,
     answers: {},
@@ -158,6 +161,18 @@ function testReducer(state: TestState, action: TestAction): TestState {
         case 'RESTART':
             return { ...initialState };
 
+        case 'GO_DONATE': {
+            // 保存当前页作为来源页，再跳转打赏
+            const from = state.screen === 'donate' ? state.previousScreen : state.screen;
+            return { ...state, previousScreen: from, screen: 'donate' };
+        }
+
+        case 'RETURN': {
+            // 回到来源页 (donate 不给返回时回 intro)
+            const target = state.previousScreen === 'donate' ? 'intro' : state.previousScreen;
+            return { ...state, screen: target as TestState['screen'] };
+        }
+
         case 'LOAD_RESULT':
             return { ...state, screen: 'result', result: action.result };
 
@@ -173,6 +188,8 @@ interface TestContextValue {
     startTest: () => void;
     answer: (questionId: string, value: number) => void;
     goBack: (targetIndex: number) => void;
+    goDonate: () => void;
+    goReturn: () => void;
     submit: () => void;
     restart: () => void;
     loadResult: (result: TestState['result']) => void;
@@ -200,6 +217,8 @@ export function TestProvider({ children }: { children: React.ReactNode }) {
     );
     const submit = useCallback(() => dispatch({ type: 'SUBMIT' }), []);
     const restart = useCallback(() => dispatch({ type: 'RESTART' }), []);
+    const goDonate = useCallback(() => dispatch({ type: 'GO_DONATE' }), []);
+    const goReturn = useCallback(() => dispatch({ type: 'RETURN' }), []);
     const loadResult = useCallback(
         (result: TestState['result']) => dispatch({ type: 'LOAD_RESULT', result }),
         [],
@@ -219,6 +238,8 @@ export function TestProvider({ children }: { children: React.ReactNode }) {
         startTest,
         answer,
         goBack,
+        goDonate,
+        goReturn,
         submit,
         restart,
         loadResult,
