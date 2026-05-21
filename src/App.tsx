@@ -2,6 +2,7 @@ import { TestProvider, useTest } from './context/TestContext';
 import { IntroScreen } from './components/screens/IntroScreen';
 import { TestScreen } from './components/screens/TestScreen';
 import { ResultScreen } from './components/screens/ResultScreen';
+import { DonateScreen } from './components/screens/DonateScreen';
 import './App.css';
 
 function AppRouter() {
@@ -14,6 +15,8 @@ function AppRouter() {
       return <TestScreen />;
     case 'result':
       return <ResultScreen />;
+    case 'donate':
+      return <DonateScreen />;
     default:
       return <IntroScreen />;
   }

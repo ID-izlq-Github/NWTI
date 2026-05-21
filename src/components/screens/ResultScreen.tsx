@@ -56,7 +56,7 @@ function ScoreBar({ dr }: { dr: DimResult }) {
 }
 
 export function ResultScreen() {
-    const { state, restart } = useTest();
+    const { state, restart, goDonate } = useTest();
     const { result } = state;
 
     const handleExport = () => {
@@ -102,6 +102,31 @@ export function ResultScreen() {
                 <div className="result-detail-card">
                     <h3>评价解读</h3>
                     <p>{matchedEntry.detail}</p>
+
+                    {/* YYF 专属推广 */}
+                    {matchedEntry.result === '(牢) YYF' && (
+                        <div className="yyf-promo">
+                            <p className="yyf-promo-title">
+                                🏫 YYF 的在线教育平台
+                            </p>
+                            <a
+                                className="yyf-promo-link"
+                                href="https://themathtower.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                The Math Tower ↗
+                            </a>
+                            <a
+                                className="yyf-promo-link"
+                                href="https://aleveltoolbox.com/mainpage.htm"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                A-Level Toolbox ↗
+                            </a>
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -152,10 +177,13 @@ export function ResultScreen() {
                 </button>
             </div>
 
-            {/* 重新测试 */}
+            {/* 重新测试 + 打赏 */}
             <div className="result-actions">
                 <button className="btn-primary" onClick={restart}>
                     重新测试
+                </button>
+                <button className="btn-outline" onClick={goDonate}>
+                    ❤️ 打赏
                 </button>
             </div>
         </div>
