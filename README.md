@@ -142,7 +142,7 @@ src/
 ---
 
 <p align="center">
-  <sub>Made with ❤️ (and questionable test-design methodology) by the NW team</sub>
+  <sub>Made by the ▆▆▆.</sub>
   <br/>
   <sub>© 2026-present. All 16 personalities are purely fictional — or are they? 🤔</sub>
 </p>
